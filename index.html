@@ -1,0 +1,324 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--pk1:#f472b6;--pk2:#ec4899;--pk3:#db2777;--pk4:#be185d;
+--lv1:#e879f9;--lv2:#d946ef;--lv3:#c026d3;
+--rs1:#fb7185;--rs2:#f43f5e;--rs3:#e11d48;
+--mg1:#c084fc;--mg2:#a855f7;--mg3:#9333ea;
+--bg:#fff5f9;--card:#ffffff;--border:#fce7f3;
+--text:#3b0764;--muted:#9d174d;--soft:#fdf2f8;
+--accent:#fbbf24;
+}
+body{background:var(--bg);font-family:system-ui,sans-serif;color:var(--text)}
+#app{max-width:920px;margin:0 auto;padding-bottom:3rem}
+
+.header{background:#be185d;padding:1.75rem 1.5rem 1.25rem;text-align:center}
+.logo h1{font-size:2.8rem;font-weight:800;color:#fff;letter-spacing:-1px}
+.logo h1 span{color:#fbcfe8}
+.logo p{color:#fbcfe8;font-size:.9rem;margin-top:3px}
+.search-row{display:flex;gap:8px;max-width:520px;margin:1rem auto 0}
+.search-row input{flex:1;padding:.7rem 1.1rem;border-radius:50px;border:none;font-size:.95rem;background:#fff;color:var(--text);outline:none}
+.search-row input:focus{outline:2px solid #f9a8d4}
+.search-row button{padding:.7rem 1.3rem;border-radius:50px;border:none;background:#f472b6;color:#fff;font-size:.85rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.search-row button:hover{background:#ec4899}
+.search-row button:active{transform:scale(.97)}
+
+.tabs-wrap{background:#fff;border-bottom:1.5px solid var(--border);padding:0 1rem}
+.tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:.8rem 1.1rem;font-size:.82rem;font-weight:600;cursor:pointer;border-bottom:2.5px solid transparent;color:var(--muted);white-space:nowrap;transition:all .15s}
+.tab:hover{color:var(--pk2)}
+.tab.active{border-bottom-color:var(--pk2);color:var(--pk2)}
+
+.sub-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:.75rem 1rem .25rem;background:var(--soft)}
+.stab{padding:5px 14px;border-radius:50px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+.stab:hover{border-color:var(--pk1);color:var(--pk2)}
+.stab.active{background:var(--pk2);border-color:var(--pk2);color:#fff}
+
+.results-bar{padding:.6rem 1rem;font-size:.8rem;color:var(--muted);background:var(--soft)}
+.results-bar strong{color:var(--text)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;padding:1rem}
+.rcard{background:var(--card);border-radius:16px;border:1.5px solid var(--border);overflow:hidden;cursor:pointer;transition:transform .18s,border-color .18s}
+.rcard:hover{transform:translateY(-3px);border-color:var(--pk1)}
+.rcard-img{height:100px;display:flex;align-items:center;justify-content:center;font-size:3rem}
+.rcard-body{padding:10px 13px 13px}
+.rcard-name{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.rcard-sub{font-size:.72rem;color:var(--muted);margin-bottom:7px}
+.macros{display:flex;gap:5px;flex-wrap:wrap}
+.mc{font-size:.68rem;padding:3px 7px;border-radius:6px;font-weight:600}
+.mc.k{background:#fce7f3;color:#9d174d}
+.mc.p{background:#f3e8ff;color:#6b21a8}
+.mc.c{background:#fdf4ff;color:#86198f}
+.mc.f{background:#fff1f2;color:#9f1239}
+
+.empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
+.empty .big{font-size:3rem;margin-bottom:.5rem}
+
+.dview{display:none;padding:0 1rem}
+.dview.open{display:block}
+.back{background:none;border:1.5px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:50px;cursor:pointer;font-size:.82rem;margin-bottom:.75rem;display:inline-flex;align-items:center;gap:5px}
+.back:hover{border-color:var(--pk1);color:var(--pk2)}
+.dcard{background:var(--card);border-radius:20px;border:1.5px solid var(--border);overflow:hidden}
+.dhero{padding:1.75rem 1.5rem;text-align:center;background:var(--soft)}
+.dhero .dem{font-size:4rem}
+.dhero h2{font-size:1.4rem;font-weight:800;color:var(--text);margin:.4rem 0 .2rem}
+.dtag{font-size:.78rem;color:var(--muted);background:#fff;padding:4px 12px;border-radius:50px;display:inline-block}
+.mbar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1.5px solid var(--border)}
+.mcell{padding:.8rem .4rem;text-align:center;border-right:1.5px solid var(--border)}
+.mcell:last-child{border-right:none}
+.mcell .v{font-size:1.2rem;font-weight:800;color:var(--pk3)}
+.mcell .l{font-size:.62rem;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.dbody{padding:1.1rem 1.4rem}
+.stitle{font-size:.72rem;font-weight:700;color:var(--pk3);text-transform:uppercase;letter-spacing:1px;margin-bottom:.6rem;padding-bottom:5px;border-bottom:2px solid var(--border)}
+.itable{width:100%;border-collapse:collapse;margin-bottom:1.1rem;font-size:.82rem;table-layout:fixed}
+.itable th{text-align:left;padding:5px 6px;color:var(--muted);font-weight:600;font-size:.7rem;border-bottom:1.5px solid var(--border)}
+.itable td{padding:6px 6px;border-bottom:1px solid var(--soft)}
+.itable tr:last-child td{border-bottom:none}
+.slist{list-style:none}
+.slist li{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--soft);font-size:.85rem;line-height:1.5}
+.slist li:last-child{border-bottom:none}
+.snum{min-width:24px;height:24px;border-radius:50%;background:var(--pk2);color:#fff;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+</style>
+
+<div id="app">
+<div class="header">
+  <div class="logo">
+    <h1>Re<span>Fresh</span></h1>
+    <p>100% plant-based · 200+ recipes · zero compromise</p>
+  </div>
+  <div class="search-row">
+    <input id="srch" type="text" placeholder="Search ingredient or dish (e.g. eggplant, curry, mango)..." />
+    <button onclick="doSearch()">Search</button>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs" id="mainTabs"></div>
+</div>
+<div class="sub-tabs" id="subTabs"></div>
+<div class="results-bar" id="rbar"></div>
+
+<div id="listView">
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none"><div class="big">🌸</div><p>No recipes found — try a different search!</p></div>
+</div>
+
+<div class="dview" id="dview">
+  <button class="back" onclick="closeD()">← Back</button>
+  <div class="dcard" id="dcard"></div>
+</div>
+</div>
+
+<script>
+const bgColors={
+  eggplant:'#f3e8ff',tomato:'#fff1f2',mushroom:'#fdf4ff',chickpea:'#fef9c3',
+  lentil:'#fce7f3',avocado:'#f0fdf4',tofu:'#fdf2f8',spinach:'#f0fdf4',
+  potato:'#fffbeb',banana:'#fefce8',zucchini:'#f0fdf4',cauliflower:'#fdf4ff',
+  curry:'#fef9c3',soup:'#fff1f2',salad:'#f0fdf4',bowl:'#fdf2f8',
+  pasta:'#fffbeb',stir_fry:'#fdf4ff',taco:'#fff7ed',dessert:'#fce7f3',
+  breakfast:'#fef9c3',smoothie:'#f0fdf4'
+};
+
+const RECIPES=[
+{id:1,name:'Baba Ganoush',emoji:'🍆',ingCat:'eggplant',dishCat:'dip',tag:'Middle Eastern',diff:'easy',cal:180,pro:5,carb:18,fat:10,time:'30 min',
+ing:[{n:'Eggplant',a:'2 large',cal:66,pro:1.6,carb:16,fat:0.5},{n:'Tahini',a:'3 tbsp',cal:170,pro:5,carb:6,fat:15},{n:'Garlic',a:'3 cloves',cal:13,pro:0.6,carb:3,fat:0},{n:'Lemon juice',a:'2 tbsp',cal:8,pro:0.1,carb:2.6,fat:0},{n:'Olive oil',a:'2 tbsp',cal:239,pro:0,carb:0,fat:27}],
+steps:['Roast eggplants over open flame or at 425°F until charred and soft, about 25 min.','Cool, peel skin, drain excess liquid.','Blend with tahini, garlic, lemon juice, salt.','Drizzle olive oil and top with paprika.']},
+
+{id:2,name:'Eggplant Curry',emoji:'🍛',ingCat:'eggplant',dishCat:'curry',tag:'Indian',diff:'medium',cal:310,pro:9,carb:38,fat:14,time:'40 min',
+ing:[{n:'Eggplant',a:'1 large',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Chickpeas',a:'1 can',cal:360,pro:19,carb:60,fat:6},{n:'Coconut milk',a:'1 cup',cal:445,pro:4.6,carb:6,fat:48},{n:'Tomatoes',a:'2',cal:36,pro:1.8,carb:7.8,fat:0.4},{n:'Garam masala',a:'2 tsp',cal:14,pro:0.5,carb:3,fat:0.5}],
+steps:['Sauté onion until golden. Add spices and cook 2 min.','Add eggplant chunks; cook 5 min.','Pour in tomatoes and coconut milk; simmer 15 min.','Stir in chickpeas and cook 8 more min.']},
+
+{id:3,name:'Stuffed Eggplant',emoji:'🍆',ingCat:'eggplant',dishCat:'roasted',tag:'Mediterranean',diff:'medium',cal:285,pro:10,carb:32,fat:13,time:'50 min',
+ing:[{n:'Eggplant',a:'2 medium',cal:66,pro:1.6,carb:16,fat:0.5},{n:'Quinoa',a:'½ cup',cal:160,pro:6,carb:29,fat:2.5},{n:'Cherry tomatoes',a:'1 cup',cal:26,pro:1.3,carb:5.8,fat:0.2},{n:'Spinach',a:'2 cups',cal:14,pro:1.8,carb:2.2,fat:0.2},{n:'Pine nuts',a:'2 tbsp',cal:114,pro:2.4,carb:2.2,fat:11}],
+steps:['Halve eggplants, score flesh, brush oil, roast 400°F 25 min.','Cook quinoa. Sauté tomatoes and spinach.','Mix quinoa filling with diced eggplant flesh.','Fill shells and return to oven 10 min.']},
+
+{id:4,name:'Eggplant Parmesan (vegan)',emoji:'🍆',ingCat:'eggplant',dishCat:'baked',tag:'Italian',diff:'medium',cal:340,pro:12,carb:42,fat:14,time:'55 min',
+ing:[{n:'Eggplant',a:'2 large',cal:66,pro:1.6,carb:16,fat:0.5},{n:'Marinara sauce',a:'2 cups',cal:140,pro:4,carb:20,fat:5},{n:'Breadcrumbs',a:'1 cup',cal:460,pro:16,carb:86,fat:6},{n:'Vegan mozzarella',a:'1 cup',cal:320,pro:14,carb:10,fat:26},{n:'Nutritional yeast',a:'3 tbsp',cal:45,pro:6,carb:5,fat:0.8}],
+steps:['Slice eggplant ½-inch thick. Bread slices and bake at 425°F until crispy.','Layer marinara, eggplant slices, vegan mozzarella in baking dish.','Repeat layers. Top with breadcrumbs and nutritional yeast.','Bake 25 min until bubbly and golden.']},
+
+{id:5,name:'Eggplant Stir-Fry',emoji:'🥢',ingCat:'eggplant',dishCat:'stir_fry',tag:'Chinese',diff:'easy',cal:230,pro:7,carb:22,fat:13,time:'20 min',
+ing:[{n:'Eggplant',a:'2 medium',cal:66,pro:1.6,carb:16,fat:0.5},{n:'Soy sauce',a:'3 tbsp',cal:24,pro:3.6,carb:2.4,fat:0.3},{n:'Garlic',a:'4 cloves',cal:18,pro:0.8,carb:4,fat:0.1},{n:'Ginger',a:'1 tbsp',cal:5,pro:0.1,carb:1.1,fat:0},{n:'Sesame oil',a:'2 tsp',cal:80,pro:0,carb:0,fat:9}],
+steps:['Cube eggplant, salt and let drain 10 min.','Stir-fry on high in sesame oil until golden.','Add garlic and ginger; toss 1 min.','Pour in soy sauce with a splash of water; toss and serve over rice.']},
+
+{id:6,name:'Eggplant Shakshuka',emoji:'🍳',ingCat:'eggplant',dishCat:'skillet',tag:'Middle Eastern',diff:'easy',cal:275,pro:9,carb:28,fat:14,time:'30 min',
+ing:[{n:'Eggplant',a:'1 medium',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Crushed tomatoes',a:'1 can',cal:70,pro:3,carb:14,fat:0.5},{n:'Silken tofu',a:'200g',cal:124,pro:13,carb:3,fat:5},{n:'Paprika & cumin',a:'1 tsp each',cal:10,pro:0.4,carb:2,fat:0.4},{n:'Fresh herbs',a:'¼ cup',cal:3,pro:0.3,carb:0.5,fat:0}],
+steps:['Sauté diced eggplant in olive oil until golden.','Add spices then crushed tomatoes; simmer 10 min.','Make wells in sauce and nestle spoonfuls of silken tofu.','Cover and cook 5 min. Garnish with herbs.']},
+
+{id:7,name:'Eggplant Soup',emoji:'🥣',ingCat:'eggplant',dishCat:'soup',tag:'Turkish',diff:'easy',cal:190,pro:6,carb:22,fat:9,time:'35 min',
+ing:[{n:'Eggplant',a:'2 large',cal:66,pro:1.6,carb:16,fat:0.5},{n:'Vegetable broth',a:'4 cups',cal:32,pro:1.6,carb:6.4,fat:0},{n:'Onion',a:'1',cal:64,pro:1.7,carb:15,fat:0.1},{n:'Garlic',a:'3 cloves',cal:13,pro:0.6,carb:3,fat:0},{n:'Lemon juice',a:'2 tbsp',cal:8,pro:0.1,carb:2.6,fat:0}],
+steps:['Roast eggplant until very soft.','Sauté onion and garlic until caramelized.','Blend eggplant, onion, garlic with broth until smooth.','Season with lemon juice, salt and serve topped with olive oil.']},
+
+{id:8,name:'Eggplant Tacos',emoji:'🌮',ingCat:'eggplant',dishCat:'taco',tag:'Fusion',diff:'easy',cal:295,pro:8,carb:40,fat:12,time:'25 min',
+ing:[{n:'Eggplant',a:'1 large',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Corn tortillas',a:'4',cal:200,pro:4,carb:44,fat:2},{n:'Black beans',a:'½ can',cal:170,pro:11,carb:30,fat:0.7},{n:'Avocado',a:'½',cal:117,pro:1.5,carb:6,fat:10.5},{n:'Chipotle sauce',a:'2 tbsp',cal:30,pro:0.5,carb:4,fat:1.5}],
+steps:['Dice eggplant, season with chipotle and cumin, roast 400°F 20 min.','Warm tortillas on dry pan.','Layer eggplant, black beans, mashed avocado.','Drizzle chipotle sauce and top with lime slaw.']},
+
+{id:9,name:'Ratatouille',emoji:'🍆',ingCat:'eggplant',dishCat:'stew',tag:'French',diff:'medium',cal:210,pro:5,carb:26,fat:10,time:'60 min',
+ing:[{n:'Eggplant',a:'1',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Zucchini',a:'2',cal:66,pro:4.8,carb:14,fat:1.2},{n:'Tomatoes',a:'4',cal:72,pro:3.6,carb:15.6,fat:0.8},{n:'Bell pepper',a:'1',cal:31,pro:1,carb:6,fat:0.3},{n:'Olive oil',a:'3 tbsp',cal:358,pro:0,carb:0,fat:40}],
+steps:['Thinly slice all vegetables into rounds.','Spread tomato sauce in a baking dish.','Arrange sliced vegetables overlapping in concentric circles.','Drizzle oil, cover with foil and bake at 375°F for 45 min.']},
+
+{id:10,name:'Eggplant Gyros',emoji:'🥙',ingCat:'eggplant',dishCat:'wrap',tag:'Greek',diff:'medium',cal:360,pro:10,carb:46,fat:16,time:'35 min',
+ing:[{n:'Eggplant',a:'1 large',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Pita bread',a:'2',cal:340,pro:12,carb:64,fat:2},{n:'Tzatziki (vegan)',a:'¼ cup',cal:60,pro:2,carb:4,fat:4},{n:'Tomato',a:'1',cal:22,pro:1.1,carb:4.8,fat:0.2},{n:'Oregano',a:'1 tsp',cal:3,pro:0.1,carb:0.7,fat:0.1}],
+steps:['Slice eggplant, marinate in oregano, olive oil, garlic and lemon.','Grill or roast until charred and tender.','Warm pita bread.','Load with eggplant, tomatoes, red onion and vegan tzatziki.']},
+
+{id:11,name:'Eggplant Lasagna',emoji:'🍝',ingCat:'eggplant',dishCat:'baked',tag:'Italian',diff:'hard',cal:385,pro:16,carb:38,fat:18,time:'75 min',
+ing:[{n:'Eggplant (sliced thin)',a:'2 large',cal:66,pro:1.6,carb:16,fat:0.5},{n:'Lentil bolognese',a:'2 cups',cal:300,pro:18,carb:48,fat:3},{n:'Vegan béchamel',a:'1.5 cups',cal:220,pro:6,carb:20,fat:13},{n:'Lasagna noodles',a:'12',cal:420,pro:15,carb:84,fat:1.5},{n:'Nutritional yeast',a:'4 tbsp',cal:60,pro:8,carb:7,fat:1}],
+steps:['Grill eggplant slices until soft. Cook lasagna noodles.','Make lentil bolognese with onion, lentils, tomatoes and herbs.','Layer: noodles, bolognese, eggplant, béchamel — repeat.','Top with nutritional yeast; bake covered 40 min, uncover 15 min.']},
+
+{id:12,name:'Eggplant Fried Rice',emoji:'🍚',ingCat:'eggplant',dishCat:'rice',tag:'Asian',diff:'easy',cal:340,pro:10,carb:52,fat:11,time:'25 min',
+ing:[{n:'Eggplant',a:'1 medium',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Day-old rice',a:'2 cups',cal:412,pro:8.5,carb:90,fat:0.7},{n:'Soy sauce',a:'3 tbsp',cal:24,pro:3.6,carb:2.4,fat:0.3},{n:'Green onions',a:'3',cal:15,pro:0.5,carb:3.5,fat:0.1},{n:'Sesame oil',a:'1 tbsp',cal:119,pro:0,carb:0,fat:13.6}],
+steps:['Dice eggplant and stir-fry on high heat until golden.','Push to side; add rice and press flat against hot wok.','Season with soy sauce and sesame oil; toss everything together.','Garnish with green onions and sesame seeds.']},
+
+{id:13,name:'Moussaka (vegan)',emoji:'🍆',ingCat:'eggplant',dishCat:'baked',tag:'Greek',diff:'hard',cal:420,pro:15,carb:40,fat:22,time:'90 min',
+ing:[{n:'Eggplant',a:'2 large',cal:66,pro:1.6,carb:16,fat:0.5},{n:'Lentils',a:'1.5 cups',cal:600,pro:42,carb:102,fat:3},{n:'Tomato sauce',a:'2 cups',cal:120,pro:4,carb:22,fat:3},{n:'Béchamel (vegan)',a:'1.5 cups',cal:220,pro:6,carb:20,fat:13},{n:'Cinnamon & allspice',a:'1 tsp each',cal:6,pro:0.1,carb:2,fat:0.1}],
+steps:['Slice and salt eggplant 20 min; rinse and roast until soft.','Make lentil meat sauce with cinnamon and allspice.','Layer eggplant then lentil sauce in deep baking dish.','Pour béchamel on top; bake 45 min at 375°F until golden.']},
+
+{id:14,name:'Eggplant Chips',emoji:'🍟',ingCat:'eggplant',dishCat:'snack',tag:'Crispy',diff:'easy',cal:160,pro:4,carb:18,fat:8,time:'30 min',
+ing:[{n:'Eggplant',a:'1 large',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Breadcrumbs',a:'½ cup',cal:230,pro:8,carb:43,fat:3},{n:'Garlic powder',a:'1 tsp',cal:9,pro:0.5,carb:2,fat:0},{n:'Smoked paprika',a:'1 tsp',cal:6,pro:0.3,carb:1.2,fat:0.3},{n:'Olive oil spray',a:'light',cal:20,pro:0,carb:0,fat:2.3}],
+steps:['Slice eggplant paper-thin on a mandoline.','Toss in seasoned breadcrumbs.','Spray with oil and arrange on baking sheet.','Bake at 375°F 25–30 min until crispy.']},
+
+{id:15,name:'Eggplant Flatbread Pizza',emoji:'🍕',ingCat:'eggplant',dishCat:'baked',tag:'Italian',diff:'easy',cal:365,pro:11,carb:48,fat:15,time:'25 min',
+ing:[{n:'Flatbread',a:'2',cal:280,pro:8,carb:52,fat:4},{n:'Eggplant',a:'1 small',cal:20,pro:0.5,carb:5,fat:0.1},{n:'Marinara',a:'½ cup',cal:70,pro:2,carb:10,fat:2.5},{n:'Vegan mozzarella',a:'½ cup',cal:160,pro:7,carb:5,fat:13},{n:'Basil',a:'½ cup',cal:3,pro:0.4,carb:0.4,fat:0.1}],
+steps:['Roast thin eggplant slices with oil and garlic.','Spread marinara on flatbread.','Top with eggplant and vegan mozzarella.','Bake at 425°F 12 min; finish with fresh basil.']},
+
+{id:16,name:'Caponata',emoji:'🫙',ingCat:'eggplant',dishCat:'stew',tag:'Sicilian',diff:'medium',cal:195,pro:4,carb:24,fat:10,time:'40 min',
+ing:[{n:'Eggplant',a:'2 medium',cal:66,pro:1.6,carb:16,fat:0.5},{n:'Celery',a:'2 stalks',cal:13,pro:0.6,carb:2.8,fat:0.2},{n:'Green olives',a:'½ cup',cal:75,pro:0.5,carb:2,fat:8},{n:'Capers',a:'2 tbsp',cal:10,pro:0.5,carb:1,fat:0.3},{n:'Red wine vinegar',a:'3 tbsp',cal:9,pro:0,carb:1.2,fat:0}],
+steps:['Cube and fry eggplant until golden; drain on paper towels.','Sauté celery and onion; add tomatoes and simmer 10 min.','Stir in olives, capers, vinegar and sugar for sweet-sour balance.','Add eggplant, cook 5 more min. Serve at room temperature.']},
+
+{id:17,name:'Eggplant Miso Glaze',emoji:'🍆',ingCat:'eggplant',dishCat:'roasted',tag:'Japanese',diff:'easy',cal:215,pro:7,carb:24,fat:10,time:'25 min',
+ing:[{n:'Eggplant',a:'2 Japanese',cal:33,pro:0.8,carb:8,fat:0.2},{n:'White miso',a:'3 tbsp',cal:69,pro:4.2,carb:9,fat:2.1},{n:'Mirin',a:'2 tbsp',cal:48,pro:0.1,carb:11,fat:0},{n:'Sake (or rice vinegar)',a:'1 tbsp',cal:14,pro:0.1,carb:0.5,fat:0},{n:'Sesame seeds',a:'1 tbsp',cal:52,pro:1.6,carb:2.1,fat:4.5}],
+steps:['Halve eggplants and score flesh in crosshatch.','Mix miso, mirin and sake into a glaze.','Spread glaze on cut side of eggplant.','Broil 8–10 min until caramelized and tender. Top with sesame seeds.']},
+
+{id:18,name:'Eggplant & Chickpea Stew',emoji:'🫕',ingCat:'eggplant',dishCat:'stew',tag:'Moroccan',diff:'medium',cal:330,pro:14,carb:46,fat:10,time:'45 min',
+ing:[{n:'Eggplant',a:'1 large',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Chickpeas',a:'1 can',cal:360,pro:19,carb:60,fat:6},{n:'Diced tomatoes',a:'1 can',cal:40,pro:2,carb:8,fat:0.5},{n:'Ras el hanout',a:'2 tsp',cal:12,pro:0.4,carb:2.5,fat:0.4},{n:'Fresh cilantro',a:'¼ cup',cal:1,pro:0.1,carb:0.3,fat:0}],
+steps:['Brown eggplant chunks in oil; set aside.','Sauté onion, add ras el hanout and garlic.','Add tomatoes and chickpeas; simmer 15 min.','Return eggplant; cook 10 min more. Top with cilantro.']},
+
+{id:19,name:'Eggplant Dumplings',emoji:'🥟',ingCat:'eggplant',dishCat:'dumpling',tag:'Asian',diff:'hard',cal:295,pro:9,carb:44,fat:9,time:'60 min',
+ing:[{n:'Dumpling wrappers',a:'24',cal:360,pro:10,carb:72,fat:1.5},{n:'Eggplant (minced)',a:'1 large',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Shiitake mushrooms',a:'1 cup',cal:40,pro:2.8,carb:6.8,fat:0.6},{n:'Ginger',a:'2 tsp',cal:4,pro:0.1,carb:0.8,fat:0},{n:'Soy sauce',a:'2 tbsp',cal:16,pro:2.4,carb:1.6,fat:0.2}],
+steps:['Finely mince eggplant and mushrooms; sauté until dry.','Season with ginger, soy sauce, sesame oil and green onion.','Fill dumpling wrappers with 1 tsp filling; fold and seal.','Pan-fry flat side down 3 min, add water, cover and steam 5 min.']},
+
+{id:20,name:'Eggplant Burger',emoji:'🍔',ingCat:'eggplant',dishCat:'burger',tag:'American',diff:'easy',cal:380,pro:10,carb:50,fat:16,time:'25 min',
+ing:[{n:'Eggplant',a:'1 large',cal:33,pro:0.8,carb:8,fat:0.2},{n:'Burger buns (vegan)',a:'2',cal:280,pro:8,carb:52,fat:4},{n:'Sriracha mayo (vegan)',a:'2 tbsp',cal:90,pro:0,carb:1,fat:10},{n:'Lettuce & tomato',a:'as needed',cal:15,pro:1,carb:3,fat:0.2},{n:'Smoked paprika',a:'1 tsp',cal:6,pro:0.3,carb:1.2,fat:0.3}],
+steps:['Slice eggplant into thick rounds; marinate in soy sauce and paprika.','Grill or pan-fry each side 4 min until charred.','Spread sriracha mayo on toasted bun.','Layer eggplant steak, lettuce and tomato.']},
+
+{id:21,name:'Classic Hummus',emoji:'🧆',ingCat:'chickpea',dishCat:'dip',tag:'Middle Eastern',diff:'easy',cal:166,pro:8,carb:18,fat:8,time:'10 min',
+ing:[{n:'Chickpeas',a:'1 can',cal:360,pro:19,carb:60,fat:6},{n:'Tahini',a:'3 tbsp',cal:170,pro:5,carb:6,fat:15},{n:'Lemon juice',a:'3 tbsp',cal:12,pro:0.2,carb:4,fat:0},{n:'Garlic',a:'2 cloves',cal:9,pro:0.4,carb:2,fat:0},{n:'Olive oil',a:'3 tbsp',cal:358,pro:0,carb:0,fat:40}],
+steps:['Drain chickpeas; reserve aquafaba.','Blend chickpeas, tahini, lemon, garlic with aquafaba until very smooth.','Season with salt and cumin.','Serve drizzled with olive oil and paprika.']},
+
+{id:22,name:'Chickpea Tikka Masala',emoji:'🍲',ingCat:'chickpea',dishCat:'curry',tag:'Indian',diff:'medium',cal:342,pro:15,carb:44,fat:13,time:'35 min',
+ing:[{n:'Chickpeas',a:'2 cans',cal:720,pro:38,carb:120,fat:12},{n:'Crushed tomatoes',a:'1.5 cups',cal:60,pro:3,carb:13,fat:0.5},{n:'Coconut cream',a:'½ cup',cal:222,pro:2.3,carb:3,fat:24},{n:'Tikka spice blend',a:'3 tbsp',cal:30,pro:1,carb:5,fat:1},{n:'Cilantro',a:'¼ cup',cal:1,pro:0.1,carb:0.3,fat:0}],
+steps:['Sauté onion, then add garlic-ginger paste and spice blend.','Add crushed tomatoes; simmer 10 min.','Stir in chickpeas and coconut cream; simmer 10 min.','Garnish with cilantro; serve with rice.']},
+
+{id:23,name:'Crispy Roasted Chickpeas',emoji:'🫘',ingCat:'chickpea',dishCat:'snack',tag:'Snack',diff:'easy',cal:200,pro:10,carb:30,fat:6,time:'35 min',
+ing:[{n:'Chickpeas',a:'1 can',cal:360,pro:19,carb:60,fat:6},{n:'Olive oil',a:'1 tbsp',cal:119,pro:0,carb:0,fat:13.6},{n:'Smoked paprika',a:'1 tsp',cal:6,pro:0.3,carb:1.2,fat:0.3},{n:'Cumin',a:'½ tsp',cal:4,pro:0.2,carb:0.9,fat:0.2},{n:'Salt',a:'½ tsp',cal:0,pro:0,carb:0,fat:0}],
+steps:['Rinse and thoroughly dry chickpeas on paper towels.','Toss in oil and spices.','Spread on baking sheet; roast at 400°F 25–35 min, shaking halfway.','Cool to crisp up; store airtight for up to 4 days.']},
+
+{id:24,name:'Chickpea Shawarma Bowl',emoji:'🥙',ingCat:'chickpea',dishCat:'bowl',tag:'Middle Eastern',diff:'easy',cal:398,pro:18,carb:52,fat:15,time:'25 min',
+ing:[{n:'Chickpeas',a:'1 can',cal:360,pro:19,carb:60,fat:6},{n:'Brown rice',a:'1 cup cooked',cal:216,pro:5,carb:45,fat:1.8},{n:'Cucumber',a:'1',cal:16,pro:0.7,carb:3.6,fat:0.1},{n:'Tahini dressing',a:'3 tbsp',cal:170,pro:5,carb:6,fat:15},{n:'Shawarma spices',a:'2 tsp',cal:10,pro:0.3,carb:2,fat:0.4}],
+steps:['Toss chickpeas in shawarma spices; roast at 425°F 20 min.','Build bowl: rice, diced cucumber, cherry tomatoes, pickled onion.','Add crispy chickpeas.','Drizzle tahini dressing and fresh lemon.']},
+
+{id:25,name:'Chickpea Soup',emoji:'🥣',ingCat:'chickpea',dishCat:'soup',tag:'Spanish',diff:'easy',cal:270,pro:13,carb:40,fat:6,time:'30 min',
+ing:[{n:'Chickpeas',a:'2 cans',cal:720,pro:38,carb:120,fat:12},{n:'Tomatoes',a:'2',cal:36,pro:1.8,carb:7.8,fat:0.4},{n:'Spinach',a:'2 cups',cal:14,pro:1.8,carb:2.2,fat:0.2},{n:'Smoked paprika',a:'1 tsp',cal:6,pro:0.3,carb:1.2,fat:0.3},{n:'Vegetable broth',a:'4 cups',cal:32,pro:1.6,carb:6.4,fat:0}],
+steps:['Sauté onion and garlic. Add paprika and cook 1 min.','Add tomatoes and broth; simmer 10 min.','Add chickpeas; simmer 10 more min.','Stir in spinach at end; season and serve.']},
+
+{id:26,name:'Chickpea Pancakes',emoji:'🥞',ingCat:'chickpea',dishCat:'breakfast',tag:'Indian-inspired',diff:'easy',cal:245,pro:14,carb:32,fat:6,time:'20 min',
+ing:[{n:'Chickpea flour',a:'1 cup',cal:356,pro:20,carb:53,fat:6},{n:'Water',a:'¾ cup',cal:0,pro:0,carb:0,fat:0},{n:'Green onion',a:'2',cal:10,pro:0.3,carb:2.3,fat:0.1},{n:'Cumin',a:'½ tsp',cal:4,pro:0.2,carb:0.9,fat:0.2},{n:'Turmeric',a:'¼ tsp',cal:2,pro:0,carb:0.4,fat:0}],
+steps:['Whisk chickpea flour with water, turmeric, cumin and salt to a smooth batter.','Fold in sliced green onions.','Cook on non-stick pan over medium heat, 3 min per side.','Serve with chutney or avocado.']},
+
+{id:27,name:'Chickpea Salad Sandwich',emoji:'🥪',ingCat:'chickpea',dishCat:'sandwich',tag:'American',diff:'easy',cal:380,pro:16,carb:48,fat:14,time:'10 min',
+ing:[{n:'Chickpeas',a:'1 can',cal:360,pro:19,carb:60,fat:6},{n:'Vegan mayo',a:'3 tbsp',cal:135,pro:0,carb:1.5,fat:15},{n:'Celery',a:'2 stalks',cal:13,pro:0.6,carb:2.8,fat:0.2},{n:'Dill',a:'1 tsp',cal:1,pro:0,carb:0.2,fat:0},{n:'Sourdough bread',a:'2 slices',cal:200,pro:8,carb:38,fat:1}],
+steps:['Mash chickpeas roughly with a fork — leave some texture.','Mix with mayo, celery, dill, mustard and lemon juice.','Season with salt and pepper.','Pile onto sourdough with crisp lettuce leaves.']},
+
+{id:28,name:'Falafel',emoji:'🧆',ingCat:'chickpea',dishCat:'fritter',tag:'Middle Eastern',diff:'medium',cal:330,pro:12,carb:38,fat:14,time:'40 min',
+ing:[{n:'Dried chickpeas (soaked)',a:'1.5 cups',cal:540,pro:28,carb:90,fat:9},{n:'Parsley & cilantro',a:'1 cup each',cal:10,pro:1.2,carb:1.8,fat:0.3},{n:'Garlic',a:'4 cloves',cal:18,pro:0.8,carb:4,fat:0.1},{n:'Cumin & coriander',a:'1 tsp each',cal:12,pro:0.5,carb:2.5,fat:0.5},{n:'Baking powder',a:'1 tsp',cal:2,pro:0,carb:0.6,fat:0}],
+steps:['Process soaked (not cooked) chickpeas with herbs, garlic, spices — keep it coarse.','Add baking powder; rest 30 min in fridge.','Form into balls; fry or bake at 400°F 20 min.','Serve in pita with tahini, pickles and salad.']},
+
+{id:29,name:'Chickpea Stir-Fry',emoji:'🥢',ingCat:'chickpea',dishCat:'stir_fry',tag:'Asian',diff:'easy',cal:310,pro:16,carb:38,fat:11,time:'20 min',
+ing:[{n:'Chickpeas',a:'1 can',cal:360,pro:19,carb:60,fat:6},{n:'Broccoli',a:'2 cups',cal:62,pro:5.1,carb:12,fat:0.8},{n:'Bell pepper',a:'1',cal:31,pro:1,carb:6,fat:0.3},{n:'Soy sauce',a:'2 tbsp',cal:16,pro:2.4,carb:1.6,fat:0.2},{n:'Hoisin sauce',a:'1 tbsp',cal:35,pro:0.5,carb:7,fat:0.5}],
+steps:['Stir-fry broccoli and pepper on high heat 3 min.','Add chickpeas; toss and cook 3 min more.','Mix soy sauce, hoisin and a splash of water; pour in.','Toss to coat and serve over steamed rice.']},
+
+{id:30,name:'Chickpea Coconut Curry',emoji:'🥥',ingCat:'chickpea',dishCat:'curry',tag:'Thai',diff:'easy',cal:365,pro:14,carb:42,fat:17,time:'30 min',
+ing:[{n:'Chickpeas',a:'1 can',cal:360,pro:19,carb:60,fat:6},{n:'Coconut milk',a:'1 can',cal:445,pro:4.6,carb:6,fat:48},{n:'Thai red curry paste',a:'2 tbsp',cal:40,pro:1,carb:6,fat:1.5},{n:'Bamboo shoots',a:'1 cup',cal:25,pro:2,carb:4,fat:0.5},{n:'Lime juice',a:'1 tbsp',cal:4,pro:0,carb:1.3,fat:0}],
+steps:['Sauté curry paste until fragrant.','Add coconut milk and simmer 5 min.','Add chickpeas and bamboo shoots; cook 10 more min.','Stir in lime juice and serve with jasmine rice.']}
+];
+
+let mainT='All', subT='All';
+
+function buildTabs(){
+  const m=['All',...new Set(RECIPES.map(r=>r.ingCat))];
+  document.getElementById('mainTabs').innerHTML=m.map(t=>`<div class="tab ${t===mainT?'active':''}" onclick="setMain('${t}')">${t.charAt(0).toUpperCase()+t.slice(1)}</div>`).join('');
+  const s=['All',...new Set(RECIPES.filter(r=>mainT==='All'||r.ingCat===mainT).map(r=>r.dishCat))];
+  document.getElementById('subTabs').innerHTML=s.map(t=>`<div class="stab ${t===subT?'active':''}" onclick="setSub('${t}')">${t.charAt(0).toUpperCase()+t.slice(1).replace('_',' ')}</div>`).join('');
+}
+
+function setMain(t){mainT=t;subT='All';buildTabs();render();}
+function setSub(t){subT=t;buildTabs();render();}
+
+function render(data=null){
+  const list=data||RECIPES.filter(r=>(mainT==='All'||r.ingCat===mainT)&&(subT==='All'||r.dishCat===subT));
+  const g=document.getElementById('grid');
+  const e=document.getElementById('empty');
+  g.innerHTML='';
+  if(list.length===0){e.style.display='block';}else{
+    e.style.display='none';
+    list.forEach(r=>{
+      const div=document.createElement('div');
+      div.className='rcard';
+      div.onclick=()=>openD(r.id);
+      div.innerHTML=`
+        <div class="rcard-img" style="background:${bgColors[r.ingCat]||'#fdf2f8'}">${r.emoji}</div>
+        <div class="rcard-body">
+          <div class="rcard-name">${r.name}</div>
+          <div class="rcard-sub">${r.tag} · ${r.time}</div>
+          <div class="macros">
+            <span class="mc k">${r.cal} Cal</span>
+            <span class="mc p">${r.pro}g P</span>
+            <span class="mc c">${r.carb}g C</span>
+            <span class="mc f">${r.fat}g F</span>
+          </div>
+        </div>`;
+      g.appendChild(div);
+    });
+  }
+  document.getElementById('rbar').innerHTML=`Showing <strong>${list.length}</strong> recipes`;
+}
+
+function doSearch(){
+  const q=document.getElementById('srch').value.toLowerCase();
+  if(!q){render();return;}
+  const res=RECIPES.filter(r=>r.name.toLowerCase().includes(q)||r.ingCat.toLowerCase().includes(q)||r.dishCat.toLowerCase().includes(q)||r.ing.some(i=>i.n.toLowerCase().includes(q)));
+  render(res);
+}
+
+function openD(id){
+  const r=RECIPES.find(x=>x.id===id);
+  const dv=document.getElementById('dview');
+  dv.classList.add('open');
+  document.getElementById('listView').style.display='none';
+  const rows=r.ing.map(i=>`<tr><td>${i.n}</td><td>${i.a}</td><td style="text-align:right">${i.cal}</td><td style="text-align:right">${i.pro}</td><td style="text-align:right">${i.carb}</td><td style="text-align:right">${i.fat}</td></tr>`).join('');
+  const steps=r.steps.map((s,i)=>`<li><div class="snum">${i+1}</div><div>${s}</div></li>`).join('');
+  document.getElementById('dcard').innerHTML=`
+    <div class="dhero"><div class="dem">${r.emoji}</div><h2>${r.name}</h2><span class="dtag">${r.tag} · ${r.time} · ${r.diff}</span></div>
+    <div class="mbar">
+      <div class="mcell"><div class="v">${r.cal}</div><div class="l">Calories</div></div>
+      <div class="mcell"><div class="v">${r.pro}g</div><div class="l">Protein</div></div>
+      <div class="mcell"><div class="v">${r.carb}g</div><div class="l">Carbs</div></div>
+      <div class="mcell"><div class="v">${r.fat}g</div><div class="l">Fat</div></div>
+    </div>
+    <div class="dbody">
+      <div class="stitle">Ingredients & nutrition per ingredient</div>
+      <div style="overflow-x:auto"><table class="itable"><thead><tr><th>Ingredient</th><th>Amount</th><th style="text-align:right">Cal</th><th style="text-align:right">Protein</th><th style="text-align:right">Carbs</th><th style="text-align:right">Fat</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="stitle" style="margin-top:1rem">Instructions</div>
+      <ul class="slist">${steps}</ul>
+    </div>`;
+  dv.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function closeD(){
+  document.getElementById('dview').classList.remove('open');
+  document.getElementById('listView').style.display='block';
+}
+
+buildTabs();
+render();
+</script>
